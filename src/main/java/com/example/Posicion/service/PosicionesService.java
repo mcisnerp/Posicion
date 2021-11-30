@@ -1,9 +1,6 @@
 package com.example.Posicion.service;
 
-import com.example.Posicion.entity.Cuenta;
-import com.example.Posicion.entity.PlazoFijo;
-import com.example.Posicion.entity.Prestamo;
-import com.example.Posicion.entity.Usuario;
+import com.example.Posicion.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -51,14 +48,14 @@ public class PosicionesService {
         //}
         return plazoFijos;
     }
-/*
-    public List<Usuario> getUsuarios() {
-        ResponseEntity<Usuario[]> usuarioResponseEntity = restTemplate.getForEntity("https://equipod-onboarding.herokuapp.com/api/auth/", Usuario[].class);
-        Usuario[] usuario = usuarioResponseEntity.getBody();
-        List<Usuario> usuarios = Arrays.asList(usuario);
-        return usuarios;
+
+    public List<Tarjeta> getTarjetas(Integer numeroCuenta) {
+        ResponseEntity<Tarjeta[]> usuarioResponseEntity = restTemplate.getForEntity("https://tarjetas.herokuapp.com/tarjetas/tarjetasdecuenta/" + numeroCuenta, Tarjeta[].class);
+        Tarjeta[] tarjeta = usuarioResponseEntity.getBody();
+        List<Tarjeta> tarjetas = Arrays.asList(tarjeta);
+        return tarjetas;
     }
-*/
+
     public List<PlazoFijo> getPlazosPorCuenta(Cuenta cuenta){
         return getPlazoFijos(cuenta.getNumeroCuenta());
     }
@@ -77,6 +74,7 @@ public class PosicionesService {
                         prestamos.add(getPrestamos(c.getNumeroCuenta()));
                     }
                     c.setPrestamos(prestamos);
+                    c.setTarjetas(getTarjetas(c.getNumeroCuenta()));
                 }
                 u.setCuentas(cuentas);
                 return u;
